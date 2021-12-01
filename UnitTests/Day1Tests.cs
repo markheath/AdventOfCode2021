@@ -20,7 +20,7 @@ namespace UnitTests
 263".Split("\r\n");
             var day1 = new Day1();
             var solution = day1.Solve(testInput);
-            Assert.AreEqual(("7", ""), solution);
+            Assert.AreEqual(("7", "5"), solution);
         }
     }
 }
