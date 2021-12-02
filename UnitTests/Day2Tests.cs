@@ -16,7 +16,7 @@ down 8
 forward 2".Split("\r\n");
             var day1 = new Day2();
             var solution = day1.Solve(testInput);
-            Assert.AreEqual(("150", ""), solution);
+            Assert.AreEqual(("150", "900"), solution);
         }
     }
 }
