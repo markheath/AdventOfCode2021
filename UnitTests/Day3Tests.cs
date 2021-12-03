@@ -22,7 +22,7 @@ namespace UnitTests
 01010".Split("\r\n");
             var solver = new Day3();
             var solution = solver.Solve(testInput);
-            Assert.AreEqual(("198", ""), solution);
+            Assert.AreEqual(("198", "230"), solution);
         }
     }
 }
