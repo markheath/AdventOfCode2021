@@ -29,7 +29,7 @@ namespace UnitTests
  2  0 12  3  7".Split("\r\n");
             var solver = new Day4();
             var solution = solver.Solve(testInput);
-            Assert.AreEqual(("4512", ""), solution);
+            Assert.AreEqual(("4512", "1924"), solution);
         }
     }
 }

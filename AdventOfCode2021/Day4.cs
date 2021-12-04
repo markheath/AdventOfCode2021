@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace AdventOfCode2021
 {
@@ -9,6 +10,7 @@ namespace AdventOfCode2021
     {
         private int[,] numbers = new int[5,5];
         private bool[,] hits = new bool[5,5];
+        private bool isDone;
         public Grid(IEnumerable<string> lines)
         {
             var row = 0;
@@ -23,6 +25,7 @@ namespace AdventOfCode2021
 
         public void MarkNumber(int n)
         {
+            if (isDone) return;
             for(var r = 0; r < numbers.GetLength(0); r++)
                 for(var c = 0; c < numbers.GetLength(1); c++)
                     if (numbers[r, c] == n)
@@ -31,13 +34,36 @@ namespace AdventOfCode2021
 
         public bool IsBingo()
         {
-            
-            return
+            if (isDone) return false;
+            var isBingo = 
                 // any row where all the columns are hits
                 Enumerable.Range(0, numbers.GetLength(0)).Any(row => Enumerable.Range(0, numbers.GetLength(1)).All(col => hits[row, col]))
                 ||
                 // any column where all the rows are hits
-                Enumerable.Range(0, numbers.GetLength(1)).All(col => Enumerable.Range(0, numbers.GetLength(0)).All(row => hits[row, col]));
+                Enumerable.Range(0, numbers.GetLength(1)).Any(col => Enumerable.Range(0, numbers.GetLength(0)).All(row => hits[row, col]));
+            if (isBingo)
+            {
+                isDone = true;
+            }
+            return isBingo;
+        }
+
+        public override string ToString()
+        {
+            var s = new StringBuilder();
+            for (var r = 0; r < numbers.GetLength(0); r++)
+            {
+                for (var c = 0; c < numbers.GetLength(1); c++)
+                {
+                    if (hits[r, c])
+                        s.Append($"*{numbers[r, c]}*".PadRight(5));
+                    else
+                        s.Append($"{numbers[r, c]}".PadRight(5));
+
+                }
+                s.AppendLine();
+            }
+            return s.ToString();
         }
 
         public int Score(int lastNumber)
@@ -47,6 +73,7 @@ namespace AdventOfCode2021
                 for (var c = 0; c < numbers.GetLength(1); c++)
                     if (!hits[r, c])
                         score+= numbers[r,c];
+            //Console.WriteLine($"done after {lastNumber} with unmarked sum {score}");
             return score * lastNumber;
         }
     }
@@ -57,21 +84,15 @@ namespace AdventOfCode2021
         private int[] numbers;
         private Grid[] grids;
 
-        public (string, string) ExpectedResult => ("55770", "");
+        public (string, string) ExpectedResult => ("55770", "2980");
 
         public (string, string) Solve(string[] input)
         {
             numbers = input[0].Split(',').Select(int.Parse).ToArray();
             grids = input.Skip(1).Batch(6).Select(b => new Grid(b)).ToArray();
 
-
-            return ($"{Part1()}", $"{Part2(input)}");
-        }
-
-
-        long Part1()
-        {
-
+            var firstWinner = -1;
+            var lastWinner = 0;
             foreach (var n in numbers)
             {
                 foreach (var g in grids)
@@ -79,16 +100,17 @@ namespace AdventOfCode2021
                     g.MarkNumber(n);
                     if (g.IsBingo())
                     {
-                        return g.Score(n);
+                        //Console.WriteLine(g);
+                        var score = g.Score(n);
+                        if (firstWinner == -1) firstWinner = score;
+                        lastWinner = score;
                     }
                 }
             }
-            throw new InvalidOperationException("No winner!");
+
+
+            return ($"{firstWinner}", $"{lastWinner}");
         }
 
-        long Part2(IEnumerable<string> input)
-        {
-            return 0;
-        }
     }
 }
