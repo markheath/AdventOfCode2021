@@ -20,7 +20,7 @@ namespace UnitTests
 5,5 -> 8,2".Split("\r\n");
             var solver = new Day5();
             var solution = solver.Solve(testInput);
-            Assert.AreEqual(("5", ""), solution);
+            Assert.AreEqual(("5", "12"), solution);
         }
     }
 }
