@@ -6,12 +6,12 @@ using System.Text;
 
 namespace AdventOfCode2021
 {
-    class Grid
+    class BingoGrid
     {
         private int[,] numbers = new int[5,5];
         private bool[,] hits = new bool[5,5];
         private bool isDone;
-        public Grid(IEnumerable<string> lines)
+        public BingoGrid(IEnumerable<string> lines)
         {
             var row = 0;
             foreach(var line in lines.Skip(1))
@@ -82,14 +82,14 @@ namespace AdventOfCode2021
     public class Day4 : ISolver
     {
         private int[] numbers;
-        private Grid[] grids;
+        private BingoGrid[] grids;
 
         public (string, string) ExpectedResult => ("55770", "2980");
 
         public (string, string) Solve(string[] input)
         {
             numbers = input[0].Split(',').Select(int.Parse).ToArray();
-            grids = input.Skip(1).Batch(6).Select(b => new Grid(b)).ToArray();
+            grids = input.Skip(1).Batch(6).Select(b => new BingoGrid(b)).ToArray();
 
             var firstWinner = -1;
             var lastWinner = 0;
