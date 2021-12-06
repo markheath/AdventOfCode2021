@@ -14,5 +14,14 @@ namespace UnitTests
             var solution = solver.CountFish(testInput[0],18);
             Assert.That(solution, Is.EqualTo(26));
         }
+
+        [Test]
+        public void Solve2WithTestInput()
+        {
+            var testInput = @"3,4,3,1,2".Split("\r\n");
+            var solver = new Day6();
+            var solution = solver.CountFish(testInput[0], 256);
+            Assert.That(solution, Is.EqualTo(26984457539L));
+        }
     }
 }
