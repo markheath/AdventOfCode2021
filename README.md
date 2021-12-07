@@ -12,3 +12,4 @@ Some notes
 - **Day 4** A good example of when creating a class can make code much more readable - I made one to represent a bingo grid. It also proved helpful tracking down a bug as I could override ToString and see what was going on.
 - **Day 5** A relatively kind one for which I made myself a generic grid helper class (should have done that yesterday). My diagonal line points algorithm is ugly - needs refactoring!
 - **Day 6** I feared this would be a performance optimization that made my head explode, but actually it was a nice use case for memoization
+- **Day 7** Part 2 could be optimized further (memoization would probably be sensible) but it didn't run too slow, so was able to get away without it

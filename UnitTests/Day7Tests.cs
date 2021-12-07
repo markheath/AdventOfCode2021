@@ -12,7 +12,7 @@ namespace UnitTests
             var testInput = @"16,1,2,0,4,2,7,1,2,14".Split("\r\n");
             var solver = new Day7();
             var solution = solver.Solve(testInput);
-            Assert.That(solution, Is.EqualTo(("37", "")));
+            Assert.That(solution, Is.EqualTo(("37", "168")));
         }
 
     }
