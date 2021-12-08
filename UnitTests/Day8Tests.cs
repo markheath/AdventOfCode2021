@@ -21,7 +21,17 @@ egadfb cdbfeg cegd fecab cgb gbdefca cg fgcdab egfdb bfceg | gbdfcae bgc cg cgb
 gcafb gcf dcaebfg ecagb gf abcdeg gaef cafbge fdbac fegbdc | fgae cfgab fg bagce".Split("\r\n");
             var solver = new Day8();
             var solution = solver.Solve(testInput);
-            Assert.That(solution, Is.EqualTo(("26", "")));
+            Assert.That(solution, Is.EqualTo(("26", "61229")));
+        }
+
+        [Test]
+        public void CreateLookup()
+        {
+            var solver = new Day8();
+            var lookup = solver.CreateLookup("acedgfb cdfbe gcdfa fbcad dab cefabd cdfgeb eafb cagedb ab".Split(' '));
+            Assert.AreEqual(8, lookup["acedgfb"]);
+            Assert.AreEqual(5, lookup["cdfbe"]);
+            Assert.AreEqual(2, lookup["gcdfa"]);
         }
 
     }
