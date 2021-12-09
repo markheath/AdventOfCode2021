@@ -84,6 +84,20 @@ namespace AdventOfCode2021
             get { return items[x,y]; }
             set { items[x, y] = value; }
         }
+
+        // for now, just the four neighbours on the grid
+        public IEnumerable<T> Neighbours(int x, int y)
+        {
+            // left
+            if (x >= 1) yield return items[x - 1, y];
+            // top
+            if (y >= 1) yield return items[x, y - 1];
+            // right
+            if (x < items.GetLength(0) - 1) yield return items[x + 1, y];
+            // bottom
+            if (y < items.GetLength(1) - 1) yield return items[x, y + 1];
+
+        }
     }
 
 }
