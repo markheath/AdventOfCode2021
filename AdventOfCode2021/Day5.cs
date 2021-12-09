@@ -1,6 +1,5 @@
 ﻿using MoreLinq;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
@@ -40,14 +39,14 @@ namespace AdventOfCode2021
                 {
                     for (var y = y1; y <= y2; y++)
                     {
-                        grid[line.From[0], y]++;
+                        grid[(line.From[0], y)]++;
                     }
                 }
                 else if (line.From[1] == line.To[1]) // a horizontal line - same Y
                 {
                     for (var x = x1; x <= x2; x++)
                     {
-                        grid[x, line.From[1]]++;
+                        grid[(x, line.From[1])]++;
                     }
                 }
                 else if(includeDiagonal)
@@ -59,47 +58,16 @@ namespace AdventOfCode2021
                         ((deltaY == 1) && (y <= line.To[1])) || ((deltaY == -1) && (y >= line.To[1])); 
                         y += deltaY, x+= deltaX)
                     {
-                        grid[x, y]++;
+                        grid[(x, y)]++;
                     }
                 }
             }
             var atLeastTwo = 0;
             for (var x = 0; x < maxX; x++)
                 for (var y = 0; y < maxY; y++)
-                    if (grid[x, y] >= 2)
+                    if (grid[(x, y)] >= 2)
                         atLeastTwo++;
             return atLeastTwo;
-        }
-    }
-
-    class Grid<T>
-    {
-        private T[,] items;
-        public Grid(int x, int y)
-        {
-            items = new T[x, y];
-        }
-        public T this[int x, int y]
-        {
-            get { return items[x,y]; }
-            set { items[x, y] = value; }
-        }
-
-        public int Width => items.GetLength(0);
-        public int Height => items.GetLength(1);
-
-        // for now, just the four neighbours on the grid
-        public IEnumerable<T> Neighbours(int x, int y)
-        {
-            // left
-            if (x >= 1) yield return items[x - 1, y];
-            // top
-            if (y >= 1) yield return items[x, y - 1];
-            // right
-            if (x < Width - 1) yield return items[x + 1, y];
-            // bottom
-            if (y < Height - 1) yield return items[x, y + 1];
-
         }
     }
 
