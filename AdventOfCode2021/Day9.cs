@@ -14,19 +14,23 @@ namespace AdventOfCode2021
         public (string, string) Solve(string[] input)
         {
             var grid = ParseToGrid(input);
-            var totalRisk = 0;
-            for (var y = 0; y < input.Length; y++)
+            var totalRisk = FindLowPoints(grid).Sum((p) => 1 + grid[p.x, p.y]);
+            return ($"{totalRisk}", $"");
+        }
+
+        private IEnumerable<(int x,int y)> FindLowPoints(Grid<int> grid)
+        {
+            for (var y = 0; y < grid.Height; y++)
             {
-                for (var x = 0; x < input[y].Length; x++)
-                { 
-                    if (IsLowPoint(grid[x,y],grid.Neighbours(x,y)))
+                for (var x = 0; x < grid.Width; x++)
+                {
+                    if (IsLowPoint(grid[x, y], grid.Neighbours(x, y)))
                     {
-                        var riskLevel = 1 + grid[x, y];
-                        totalRisk += riskLevel;
+                        yield return (x, y);
                     }
                 }
             }
-            return ($"{totalRisk}", $"");
+
         }
 
         private bool IsLowPoint(int v, IEnumerable<int> neighbours)
