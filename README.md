@@ -14,4 +14,5 @@ Some notes
 - **Day 6** I feared this would be a performance optimization that made my head explode, but actually it was a nice use case for memoization
 - **Day 7** Part 2 could be optimized further (memoization would probably be sensible) but it didn't run too slow, so was able to get away without it
 - **Day 8** Was fairly easy to do part 2 by allowing a cost calculation function to be injected into the part 1 solution
-- **Day 9** Was finally the catalyst to improve the grid I made on day 5 and introduce a coordinate class based on one I created last year
+- **Day 9** Was finally the catalyst to improve the grid I made on day 5 and introduce a coordinate class based on one I created last year. A nice recursive solution using hashsets to track the points already found in the basin.
+- **Day 10** A relatively kind challenge that could be solved with a stack. My main mistake was not using longs for part 2 so getting integer arithmetic overflow!

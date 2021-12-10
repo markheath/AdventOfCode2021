@@ -21,7 +21,7 @@ namespace UnitTests
 <{([{{}}[<[[[<>{}]]]>[]]".Split("\r\n");
             var solver = new Day10();
             var solution = solver.Solve(testInput);
-            Assert.That(solution, Is.EqualTo(("26397", "")));
+            Assert.That(solution, Is.EqualTo(("26397", "288957")));
         }
 
 

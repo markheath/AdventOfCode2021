@@ -9,20 +9,24 @@ namespace AdventOfCode2021
 
     public class Day10 : ISolver
     {
-        public (string, string) ExpectedResult => ("240123", "");
-
-        
+        public (string, string) ExpectedResult => ("240123", "3260812321");
 
         public (string, string) Solve(string[] input)
         {
-            var syntaxScore = input.Select(ParseLine).Sum();
-            return ($"{syntaxScore}", $"");
+            var scores = input.Select(ParseLine).ToList();
+            var syntaxScore = scores.Select(s => s.SyntaxError).Sum();
+
+            var incompleteScores = scores.Where(s => s.SyntaxError == 0 && s.CompletionScore != 0).OrderBy(s => s.CompletionScore).ToList();
+            var middleScore = incompleteScores[incompleteScores.Count / 2].CompletionScore;
+
+            return ($"{syntaxScore}", $"{middleScore}");
         }
 
         private Dictionary<char, int> syntaxScore = new Dictionary<char, int>() { { ')', 3 }, { ']', 57 }, { '}', 1197 }, { '>', 25137 } };
-        private Dictionary<char, char> pairs = new Dictionary<char, char>() { { ')', '(' }, { ']', '[' }, { '}', '{' }, { '>', '<' } };
+        private Dictionary<char, int> completionScores = new Dictionary<char, int>() { { '(', 1 }, { '[', 2 }, { '{', 3 }, { '<', 4 } };
+        private Dictionary<char, char> pairs = new Dictionary<char, char>() { { ')', '(' }, { ']', '[' }, { '}', '{' }, { '>', '<' }};
 
-        public int ParseLine(string line)
+        public (long SyntaxError, long CompletionScore) ParseLine(string line)
         {
             var stack = new Stack<char>();
             foreach(var c in line)
@@ -43,7 +47,7 @@ namespace AdventOfCode2021
                         if (!stack.TryPeek(out char top) || top != pairs[c])
                         {
                             // closing without an opening
-                            return syntaxScore[c];
+                            return (syntaxScore[c],0);
                         }
                         else
                         {
@@ -55,7 +59,13 @@ namespace AdventOfCode2021
                 }
             }
             // incomplete
-            return 0;
+            var completionScore = 0L;
+            while(stack.TryPop(out char opener))
+            {
+                completionScore *= 5;
+                completionScore += completionScores[opener];
+            }
+            return (0, completionScore);
         }
 
 
