@@ -9,13 +9,16 @@ namespace AdventOfCode2021
 
     public class Day11 : ISolver
     {
-        public (string, string) ExpectedResult => ("1615", "");
+        public (string, string) ExpectedResult => ("1615", "249");
 
         public (string, string) Solve(string[] input)
         {
             var grid = Grid<int>.ParseToGrid(input);
             var total = Enumerable.Range(1, 100).Sum(n => Step(grid));
-            return ($"{total}", $"");
+
+            var firstSyncFlash = Enumerable.Range(101, 1000).SkipWhile(n => Step(grid) != 100).First();
+
+            return ($"{total}", $"{firstSyncFlash}");
         }
 
         private int Step(Grid<int> grid)

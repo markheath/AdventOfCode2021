@@ -16,3 +16,4 @@ Some notes
 - **Day 8** Was fairly easy to do part 2 by allowing a cost calculation function to be injected into the part 1 solution
 - **Day 9** Was finally the catalyst to improve the grid I made on day 5 and introduce a coordinate class based on one I created last year. A nice recursive solution using hashsets to track the points already found in the basin.
 - **Day 10** A relatively kind challenge that could be solved with a stack. My main mistake was not using longs for part 2 so getting integer arithmetic overflow!
+- **Day 11** The grid class is proving very helpful, and another opportunity for some recursion today

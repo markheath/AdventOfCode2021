@@ -21,7 +21,7 @@ namespace UnitTests
 5283751526".Split("\r\n");
             var solver = new Day11();
             var solution = solver.Solve(testInput);
-            Assert.That(solution, Is.EqualTo(("1656", "")));
+            Assert.That(solution, Is.EqualTo(("1656", "195")));
         }
 
 
