@@ -18,7 +18,7 @@ A-end
 b-end".Split("\r\n");
             var solver = new Day12();
             var solution = solver.Solve(testInput);
-            Assert.That(solution.Item1, Is.EqualTo("10"));
+            Assert.That(solution, Is.EqualTo(("10","36")));
         }
 
         [Test]
@@ -36,7 +36,7 @@ kj-HN
 kj-dc".Split("\r\n");
             var solver = new Day12();
             var solution = solver.Solve(testInput);
-            Assert.That(solution.Item1, Is.EqualTo("19"));
+            Assert.That(solution, Is.EqualTo(("19","103")));
         }
 
         [Test]
@@ -62,7 +62,7 @@ pj-fs
 start-RW".Split("\r\n");
             var solver = new Day12();
             var solution = solver.Solve(testInput);
-            Assert.That(solution.Item1, Is.EqualTo("226"));
+            Assert.That(solution, Is.EqualTo(("226", "3509")));
         }
 
     }
