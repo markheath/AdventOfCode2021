@@ -17,3 +17,4 @@ Some notes
 - **Day 9** Was finally the catalyst to improve the grid I made on day 5 and introduce a coordinate class based on one I created last year. A nice recursive solution using hashsets to track the points already found in the basin.
 - **Day 10** A relatively kind challenge that could be solved with a stack. My main mistake was not using longs for part 2 so getting integer arithmetic overflow!
 - **Day 11** The grid class is proving very helpful, and another opportunity for some recursion today
+- **Day 12** A nice opportunity to build a graph and write a recursive depth first algorithm. Could be optimised a bit, but using a string to track route history worked reasonably well.

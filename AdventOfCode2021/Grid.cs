@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace AdventOfCode2021
 {
@@ -18,9 +19,12 @@ namespace AdventOfCode2021
         }
 
         private T[,] items;
+
         public Grid(int x, int y)
         {
             items = new T[x, y];
+            Height = y;
+            Width = x;  
         }
         public T this[Coord c]
         {
@@ -28,8 +32,8 @@ namespace AdventOfCode2021
             set { items[c.X, c.Y] = value; }
         }
 
-        public int Width => items.GetLength(0);
-        public int Height => items.GetLength(1);
+        public int Width { get; set;  }
+        public int Height { get; set; }
 
         public bool IsInGrid(Coord point) => point.X >= 0 && point.X < Width && point.Y >= 0 && point.Y < Height;
 
@@ -48,6 +52,20 @@ namespace AdventOfCode2021
             var neighbours = includeDiagonals ? horizontalNeighbours.Concat(diagonalNeigbours) : horizontalNeighbours;
 
             return neighbours.Select(n => p + n).Where(IsInGrid);
+        }
+
+        public override string ToString()
+        {
+            var s = new StringBuilder();
+            for(var y = 0;y<Height;y++)
+            {
+                for(var x= 0; x < Width;x++)
+                {
+                    s.Append(this[(x, y)].ToString());
+                }
+                s.AppendLine();
+            }
+            return s.ToString();
         }
     }
 
