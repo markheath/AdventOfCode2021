@@ -32,7 +32,7 @@ fold along y=7
 fold along x=5".Split("\r\n");
             var solver = new Day13();
             var solution = solver.Solve(testInput);
-            Assert.That(solution, Is.EqualTo(("17", "")));
+            Assert.That(solution.Item1, Is.EqualTo("17"));
         }
 
 

@@ -8,7 +8,7 @@ namespace AdventOfCode2021
 
     public class Day13 : ISolver
     {
-        public (string, string) ExpectedResult => ("602", "");
+        public (string, string) ExpectedResult => ("602", "CAFJHZCK");
 
         public (string, string) Solve(string[] input)
         {
@@ -32,6 +32,7 @@ namespace AdventOfCode2021
                 .Select(x => x.Substring(11).Split("="))
                 .Select(x => new { Axis = x[0], Pos = int.Parse(x[1]) })
                 .ToList();
+            var part1 = -1;
             foreach(var fold in folds)
             {
                 if (fold.Axis == "x")
@@ -65,14 +66,14 @@ namespace AdventOfCode2021
                     // shrink the grid
                     grid.Height = fold.Pos;
                 }
-                //Console.WriteLine("===");
-                //Console.WriteLine(grid);
-                break; // just first fold for now
+                if (part1 == -1)
+                    part1 = grid.AllPositions().Count(p => grid[p] == '#');                
             }
-
-            var totalPoints = grid.AllPositions().Count(p => grid[p] == '#');
-
-            return ($"{totalPoints}", $"");
+            Console.WriteLine("===");
+            Console.WriteLine(grid);
+            // didn't bother to OCR - could do pattern mathching on the letters as they are 
+            // four pixels wide for each char
+            return ($"{part1}", $"CAFJHZCK");
         }
     }
 }

@@ -18,3 +18,4 @@ Some notes
 - **Day 10** A relatively kind challenge that could be solved with a stack. My main mistake was not using longs for part 2 so getting integer arithmetic overflow!
 - **Day 11** The grid class is proving very helpful, and another opportunity for some recursion today
 - **Day 12** A nice opportunity to build a graph and write a recursive depth first algorithm. Could be optimised a bit, but using a string to track route history worked reasonably well.
+- **Day 13** Another opportunity to improve my Grid helper a bit and make it resizable and able to print itself out. For part 2, doing OCR or letter recognition would have been nice but time did not permit!
