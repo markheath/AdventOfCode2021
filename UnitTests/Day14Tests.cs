@@ -29,7 +29,7 @@ CC -> N
 CN -> C".Split("\r\n");
             var solver = new Day14();
             var solution = solver.Solve(testInput);
-            Assert.That(solution, Is.EqualTo(("1588","")));
+            Assert.That(solution, Is.EqualTo(("1588", "2188189693529")));
         }
 
 

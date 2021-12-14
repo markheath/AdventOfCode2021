@@ -19,3 +19,4 @@ Some notes
 - **Day 11** The grid class is proving very helpful, and another opportunity for some recursion today
 - **Day 12** A nice opportunity to build a graph and write a recursive depth first algorithm. Could be optimised a bit, but using a string to track route history worked reasonably well.
 - **Day 13** Another opportunity to improve my Grid helper a bit and make it resizable and able to print itself out. For part 2, doing OCR or letter recognition would have been nice but time did not permit!
+- **Day 14** A bit of a challenge today. Part 1 was nice and easy, but part 2 required a rethink for performance reasons. My code was getting very ugly, but was hugely simplified by creating a C# equivalent of the Python counter class
