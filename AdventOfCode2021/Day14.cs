@@ -9,7 +9,7 @@ namespace AdventOfCode2021
 
     public class Day14 : ISolver
     {
-        public (string, string) ExpectedResult => ("2375", "");
+        public (string, string) ExpectedResult => ("2375", "1976896901756");
         private Dictionary<string, string> instructions;
 
         public (string, string) Solve(string[] input)
