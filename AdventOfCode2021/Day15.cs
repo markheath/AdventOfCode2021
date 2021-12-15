@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace AdventOfCode2021
 {
@@ -11,7 +12,27 @@ namespace AdventOfCode2021
         {
             var grid = Grid<int>.ParseToGrid(input);
             var best = MinCost((0, 0), (grid.Width - 1, grid.Height - 1), grid);
-            return ($"{best}", $"");
+            var bigGrid = Expand(grid);
+            //Console.WriteLine(bigGrid);
+            var best2 = MinCost((0, 0), (bigGrid.Width - 1, bigGrid.Height - 1), bigGrid);
+            return ($"{best}", $"{best2}");
+        }
+
+        private Grid<int> Expand(Grid<int> inputGrid)
+        {
+            var outputGrid = new Grid<int>(inputGrid.Width * 5, inputGrid.Height * 5);
+            for (var x = 0; x < outputGrid.Width; x++)
+            {
+                for(var y = 0; y < outputGrid.Height; y++)
+                {
+                    var repeat = x/inputGrid.Width + y/inputGrid.Height;
+                    var value = inputGrid[(x % inputGrid.Width,y % inputGrid.Height)] + repeat;
+                    if (value >= 10) value -= 9;
+                    if (value >= 10) throw new InvalidOperationException("oops");
+                    outputGrid[(x, y)] = value;
+                }
+            }
+            return outputGrid;
         }
 
         // my pathfinder algorithm was too slow, so took inspiration from this solution by DenverCoder1 to optimise
