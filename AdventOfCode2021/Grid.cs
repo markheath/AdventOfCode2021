@@ -7,6 +7,7 @@ namespace AdventOfCode2021
 
     class Grid<T>
     {
+        // for those cases where the grid is single digit numbers
         public static Grid<int> ParseToGrid(string[] input)
         {
             var grid = new Grid<int>(input[0].Length, input.Length);
