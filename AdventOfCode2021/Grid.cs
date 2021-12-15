@@ -27,6 +27,15 @@ namespace AdventOfCode2021
             Height = y;
             Width = x;  
         }
+
+        public Grid(int x, int y, T defaultValue)
+            :this(x,y)
+        {
+            foreach(var p in AllPositions())
+                this[p] = defaultValue;
+        }
+
+
         public T this[Coord c]
         {
             get { return items[c.X,c.Y]; }

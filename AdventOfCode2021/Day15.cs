@@ -1,66 +1,45 @@
-﻿using MoreLinq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace AdventOfCode2021
 {
 
     public class Day15 : ISolver
     {
-        public (string, string) ExpectedResult => ("", ""); // 767 is still too high!
+        public (string, string) ExpectedResult => ("613", "");
 
         public (string, string) Solve(string[] input)
         {
             var grid = Grid<int>.ParseToGrid(input);
-            var best = FindPaths((0, 0), 0, grid).Min();
+            var best = MinCost((0, 0), (grid.Width - 1, grid.Height - 1), grid);
             return ($"{best}", $"");
         }
 
-        // initially just go right and left so we don't need to remember, HashSet<Coord> visited
-        private int bestRisk = int.MaxValue;
-
-        // depth first search
-        private IEnumerable<int> FindPaths(Coord pos, int riskSoFar, Grid<int> g)
+        // my pathfinder algorithm was too slow, so took inspiration from this solution by DenverCoder1 to optimise
+        // https://github.com/DenverCoder1/Advent-of-Code-2021/blob/main/Day-15/part1.py
+        private int MinCost(Coord start, Coord target, Grid<int> map)
         {
-            Coord target = (g.Width - 1, g.Height - 1);
-            var toTry = new List<(Coord, int)>();
-            // directions are right and left
-            if (pos.X < g.Width - 1)
+            var lowestCost = new Grid<int>(map.Width, map.Height, int.MaxValue);
+            lowestCost[start] = 0;
+            var queue = new Queue<Coord>();
+            queue.Enqueue(start);
+            while(queue.Count > 0)
             {
-                // try going right
-                var newPos = pos + (1, 0);
-                var newRisk = riskSoFar + g[newPos];
-                toTry.Add((newPos, newRisk));
-            }
-            if (pos.Y < g.Height - 1)
-            {
-                // try going down
-                var newPos = pos + (0, 1);
-                var newRisk = riskSoFar + g[newPos];
-                toTry.Add((newPos, newRisk));
-            }
-
-            foreach(var (newPos, newRisk) in toTry.OrderBy(t => t.Item2))
-            {
-                if (newRisk < bestRisk)
+                var current = queue.Dequeue();
+                foreach(var neighbour in map.Neighbours(current))
                 {
-                    if (newPos.Equals(target))
+                    var neighbourCost = lowestCost[neighbour];
+                    var costToNeighbour = lowestCost[current] + map[neighbour];
+                    if (neighbourCost > costToNeighbour)
                     {
-                        Console.WriteLine($"Best so far {newRisk}");
-                        bestRisk = newRisk;
-                        yield return newRisk;
-                    }
-                    else
-                    {
-                        foreach (var path in FindPaths(newPos, newRisk, g))
-                            yield return path;
+                        lowestCost[neighbour] = costToNeighbour;
+                        queue.Enqueue(neighbour);
                     }
                 }
-                // else longer than the best, abandon this route
             }
+            return lowestCost[target];
         }
+
+
 
     }
 
