@@ -6,15 +6,13 @@ namespace AdventOfCode2021
 
     public class Day15 : ISolver
     {
-        public (string, string) ExpectedResult => ("613", "");
+        public (string, string) ExpectedResult => ("613", "2899");
 
         public (string, string) Solve(string[] input)
         {
             var grid = Grid<int>.ParseToGrid(input);
-            var best = MinCost((0, 0), (grid.Width - 1, grid.Height - 1), grid);
-            var bigGrid = Expand(grid);
-            //Console.WriteLine(bigGrid);
-            var best2 = MinCost((0, 0), (bigGrid.Width - 1, bigGrid.Height - 1), bigGrid);
+            var best = MinCost(grid);
+            var best2 = MinCost(Expand(grid));
             return ($"{best}", $"{best2}");
         }
 
@@ -28,7 +26,6 @@ namespace AdventOfCode2021
                     var repeat = x/inputGrid.Width + y/inputGrid.Height;
                     var value = inputGrid[(x % inputGrid.Width,y % inputGrid.Height)] + repeat;
                     if (value >= 10) value -= 9;
-                    if (value >= 10) throw new InvalidOperationException("oops");
                     outputGrid[(x, y)] = value;
                 }
             }
@@ -37,8 +34,9 @@ namespace AdventOfCode2021
 
         // my pathfinder algorithm was too slow, so took inspiration from this solution by DenverCoder1 to optimise
         // https://github.com/DenverCoder1/Advent-of-Code-2021/blob/main/Day-15/part1.py
-        private int MinCost(Coord start, Coord target, Grid<int> map)
+        private int MinCost(Grid<int> map)
         {
+            var start = (0, 0);
             var lowestCost = new Grid<int>(map.Width, map.Height, int.MaxValue);
             lowestCost[start] = 0;
             var queue = new Queue<Coord>();
@@ -57,11 +55,8 @@ namespace AdventOfCode2021
                     }
                 }
             }
-            return lowestCost[target];
+            return lowestCost[(map.Width - 1, map.Height - 1)];
         }
-
-
-
     }
 
 }

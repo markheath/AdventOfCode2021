@@ -20,3 +20,4 @@ Some notes
 - **Day 12** A nice opportunity to build a graph and write a recursive depth first algorithm. Could be optimised a bit, but using a string to track route history worked reasonably well.
 - **Day 13** Another opportunity to improve my Grid helper a bit and make it resizable and able to print itself out. For part 2, doing OCR or letter recognition would have been nice but time did not permit!
 - **Day 14** A bit of a challenge today. Part 1 was nice and easy, but part 2 required a rethink for performance reasons. My code was getting very ugly, but was hugely simplified by creating a C# equivalent of the Python counter class
+- **Day 15** I picked the wrong algorithm today and even with optimizations part 1 was never going to be comepleted in time. I needed a hint if I was to finish in my available time, and the elegant solution involves tracking a grid of the shortest route to every point. Part 2 was thankfully relatively straightforward after that
