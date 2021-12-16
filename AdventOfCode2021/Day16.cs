@@ -30,22 +30,27 @@ namespace AdventOfCode2021
             return ParsePacket(new BitStream(packetHex));
         }
 
+        private static long ReadExtensibleNumber(BitStream bitStream)
+        {
+            var literalValue = 0L;
+            var final = false;
+            do
+            {
+                if (bitStream.ReadNumber(1) == 0) final = true;
+                var val = bitStream.ReadNumber(4);
+                literalValue <<= 4;
+                literalValue |= val;
+            } while (!final);
+            return literalValue;
+        }
+
         private Packet ParsePacket(BitStream bitStream)
         {
             var version = (int)bitStream.ReadNumber(3);
             var typeId = (int)bitStream.ReadNumber(3);
             if (typeId == 4)
             {
-                var literalValue = 0L;
-                var final = false;
-                do
-                {
-                    if (bitStream.ReadNumber(1) == 0) final = true;
-                    var val = bitStream.ReadNumber(4);
-                    literalValue <<= 4;
-                    literalValue |= val;                    
-                } while (!final);
-                return new LiteralPacket(version, literalValue);
+                return new LiteralPacket(version, ReadExtensibleNumber(bitStream));
             }
             else
             {
@@ -80,8 +85,8 @@ namespace AdventOfCode2021
         {
             public Packet(int version, int type)
             {
-                this.PacketVersion = version;
-                this.PacketType = type;
+                PacketVersion = version;
+                PacketType = type;
             }
 
             public int PacketVersion { get; }
