@@ -13,93 +13,79 @@ namespace AdventOfCode2021
         public (string, string) Solve(string[] input)
         {
             var packet = ParsePacket(input[0]);
-            return ($"{GetVersionCount(packet)}", $"{packet.Value}");
+            return ($"{GetVersionSum(packet)}", $"{packet.Value}");
         }
 
-        public int GetVersionCount(string packetHex)
-        {            
-            return GetVersionCount(ParsePacket(packetHex));
-        }
-
-        private int GetVersionCount(Packet p)
+        public int GetVersionSum(Packet p)
         {
             if (p is OperatorPacket c)
             {
-                return c.PacketVersion + c.SubPackets.Sum(s => GetVersionCount(s));
+                return c.PacketVersion + c.SubPackets.Sum(s => GetVersionSum(s));
             }
             return p.PacketVersion;
-
         }
 
         public Packet ParsePacket(string packetHex)
         {
-            var packetBinary = HexToBinary(packetHex);
-            var (p, _) = ParsePacket(packetBinary, 0);
-            return p;
+            return ParsePacket(new BitStream(packetHex));
         }
 
-        private (Packet,int) ParsePacket(string input, int startPos)
+        private Packet ParsePacket(BitStream bitStream)
         {
-            var version = Convert.ToInt32(input.Substring(startPos, 3), 2);
-            startPos += 3;
-            var typeId = Convert.ToInt32(input.Substring(startPos, 3), 2);
-            startPos += 3;
+            var version = (int)bitStream.ReadNumber(3);
+            var typeId = (int)bitStream.ReadNumber(3);
             if (typeId == 4)
             {
                 var literalValue = 0L;
                 var final = false;
                 do
                 {
-                    if (input[startPos] == '0') final = true;
-                    var val = Convert.ToInt32(input.Substring(startPos+1, 4), 2);
+                    if (bitStream.ReadNumber(1) == 0) final = true;
+                    var val = bitStream.ReadNumber(4);
                     literalValue <<= 4;
                     literalValue |= val;                    
-                    startPos += 5;
                 } while (!final);
-                return (new LiteralPacket(version, literalValue), startPos);
+                return new LiteralPacket(version, literalValue);
             }
             else
             {
-                var p = new OperatorPacket();
-                p.PacketType = typeId;
-                p.PacketVersion = version;
+                var p = new OperatorPacket(version, typeId);
                 // its an operator
-                var lengthType = input[startPos];
-                startPos++;
-                if (lengthType == '0')
+                var lengthType = bitStream.ReadNumber(1);
+                if (lengthType == 0)
                 {
                     // next 15 bits are length of sub packets
-                    var subPacketLength = Convert.ToInt32(input.Substring(startPos, 15), 2);
-                    startPos += 15;
-                    var subPacketsEnd = startPos + subPacketLength;
-                    while (startPos < subPacketsEnd)
+                    var subPacketLength = bitStream.ReadNumber(15); 
+                    var subPacketsEnd = bitStream.BitPosition + subPacketLength;
+                    while (bitStream.BitPosition < subPacketsEnd)
                     {
-                        var (next, newPos) = ParsePacket(input, startPos);
-                        startPos = newPos;
+                        var next = ParsePacket(bitStream);
                         p.SubPackets.Add(next);
                     }
                 }
                 else
                 {
-                    var subPacketCount = Convert.ToInt32(input.Substring(startPos, 11), 2);
-                    startPos += 11;
+                    var subPacketCount = bitStream.ReadNumber(11);
                     for (int n = 0; n < subPacketCount; n++)
                     {
-                        var (next, newPos) = ParsePacket(input, startPos);
-                        startPos = newPos;
+                        var next = ParsePacket(bitStream);
                         p.SubPackets.Add(next);
                     }
                 }
-                return (p, startPos);
+                return p;
             }
         }
 
         public abstract class Packet
         {
-            
+            public Packet(int version, int type)
+            {
+                this.PacketVersion = version;
+                this.PacketType = type;
+            }
 
-            public int PacketVersion { get; set; }
-            public int PacketType { get; set; }
+            public int PacketVersion { get; }
+            public int PacketType { get;  }
             public abstract long Value { get; }
         }
 
@@ -108,9 +94,8 @@ namespace AdventOfCode2021
             private readonly long value;
 
             public LiteralPacket(int packetVersion, long value)
+                : base(packetVersion, 4)
             {
-                base.PacketVersion = packetVersion;
-                base.PacketType = 4;
                 this.value = value;
             }
             public override long Value
@@ -120,7 +105,8 @@ namespace AdventOfCode2021
         }
         public class OperatorPacket : Packet
         {
-            public OperatorPacket()
+            public OperatorPacket(int packetVersion, int type)
+                : base(packetVersion, type)
             {
                 SubPackets = new List<Packet>();
             }
@@ -154,15 +140,37 @@ namespace AdventOfCode2021
         }
 
 
-        public string HexToBinary(string input)
+        
+    }
+
+    class BitStream
+    {
+        public BitStream(string hexStream)
+        {
+            binaryStream = HexToBinary(hexStream);
+        }
+
+        private string HexToBinary(string hex)
         {
             var sb = new StringBuilder();
-            foreach (var c in input)
-            {               
+            foreach (var c in hex)
+            {
                 sb.Append(Convert.ToString(Convert.ToInt32(c.ToString(), 16), 2).PadLeft(4, '0'));
             }
             return sb.ToString();
         }
+
+        private string binaryStream;
+        public int BitPosition { get; private set; }
+
+        public long ReadNumber(int bits)
+        {
+            var value = Convert.ToInt64(binaryStream.Substring(BitPosition, bits), 2);
+            BitPosition += bits;
+            return value;
+        }
+
     }
+
 
 }

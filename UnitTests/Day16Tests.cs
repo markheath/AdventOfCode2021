@@ -14,7 +14,7 @@ namespace UnitTests
         public void SolveWithTestInput(string inputHex, int versionSum)
         {
             var solver = new Day16();
-            var solution = solver.GetVersionCount(inputHex);
+            var solution = solver.GetVersionSum(solver.ParsePacket(inputHex));
             Assert.That(solution, Is.EqualTo(versionSum));
         }
 
