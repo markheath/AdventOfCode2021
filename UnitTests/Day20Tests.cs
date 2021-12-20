@@ -19,7 +19,7 @@ namespace UnitTests
 ..###".Split("\r\n");
             var solver = new Day20();
             var solution = solver.Solve(input);
-            Assert.That(solution, Is.EqualTo(("35", "")));
+            Assert.That(solution, Is.EqualTo(("35", "3351")));
         }
 
     }

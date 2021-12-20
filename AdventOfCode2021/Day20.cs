@@ -74,7 +74,7 @@ namespace AdventOfCode2021
 
     public class Day20 : ISolver
     {
-        public (string, string) ExpectedResult => ("5489", "");
+        public (string, string) ExpectedResult => ("5489", "19066");
 
         public (string Part1, string Part2) Solve(string[] input)
         {
@@ -84,10 +84,15 @@ namespace AdventOfCode2021
             foreach (var n in Enumerable.Range(0, 2))
             {
                 image = Enhance(algorithm, image);
-                Print(image);
+                //Print(image);
             }
-
-            return ($"{image.Count}", $"");
+            var part1 = image.Count;
+            foreach (var n in Enumerable.Range(0, 48))
+            {
+                image = Enhance(algorithm, image);
+                //Print(image);
+            }
+            return ($"{part1}", $"{image.Count}");
         }
 
         private InfiniteGrid Enhance(string algorithm, InfiniteGrid image)
