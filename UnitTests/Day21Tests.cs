@@ -14,7 +14,7 @@ public class Day21Tests
 Player 2 starting position: 8".Split("\r\n");
         var solver = new Day21();
         var solution = solver.Solve(input);
-        Assert.That(solution, Is.EqualTo(("739785", "")));
+        Assert.That(solution, Is.EqualTo(("739785", "444356092776315")));
     }
 
 }
